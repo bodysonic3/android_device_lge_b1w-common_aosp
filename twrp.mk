@@ -1,6 +1,10 @@
 PRODUCT_COPY_FILES += device/lge/b1w-common/recovery/root/etc/twrp.fstab:recovery/root/etc/twrp.fstab
 RECOVERY_VARIANT := twrp
-TW_THEME := portrait_hdpi
+RECOVERY_GRAPHICS_USE_LINELENGTH := true
+TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
+TW_INCLUDE_JB_CRYPTO := false
+TW_NO_SCREEN_BLANK := true
+TW_EXCLUDE_ENCRYPTED_BACKUPS := true
+TW_INCLUDE_L_CRYPTO := true
 TW_BRIGHTNESS_PATH := /sys/class/leds/lcd-backlight/brightness
 TW_MAX_BRIGHTNESS := 255
-

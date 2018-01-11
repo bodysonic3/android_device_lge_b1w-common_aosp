@@ -47,12 +47,55 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/handheld_core_hardware.xml:system/etc/permissions/handheld_core_hardware.xml \
     frameworks/native/data/etc/android.hardware.nfc.hce.xml:system/etc/permissions/android.hardware.nfc.hce.xml
 
+# Hardware modules to build
+PRODUCT_PACKAGES += \
+    android.hardware.health@1.0-impl \
+    android.hardware.drm@1.0-impl \
+    android.hardware.nfc@1.0-impl \
+    libbt-vendor \
+    android.hardware.bluetooth@1.0-impl \
+    android.hardware.wifi@1.0-service \
+    android.hardware.renderscript@1.0-impl \
+    android.hardware.vibrator@1.0-impl \
+    android.hardware.sensors@1.0-impl \
+    android.hardware.keymaster@3.0-impl \
+    android.hardware.gnss@1.0-impl \
+    android.hardware.light@2.0-impl \
+    android.hardware.graphics.composer@2.1-impl \
+    android.hardware.graphics.allocator@2.0-impl \
+    android.hardware.graphics.mapper@2.0-impl \
+    android.hardware.memtrack@1.0-impl \
+    android.hardware.audio@2.0-impl \
+    android.hardware.audio.effect@2.0-impl \
+    android.hardware.usb@1.0-service \
+    android.hardware.power@1.0-impl \
+    hwcomposer.msm8974 \
+    gralloc.msm8974 \
+    copybit.msm8974 \
+    memtrack.msm8974 \
+    audio.primary.msm8974 \
+    audio_policy.msm8974 \
+    lights.qcom \
+    audio.a2dp.default \
+    audio.usb.default \
+    audio.r_submix.default \
+    libaudio-resampler \
+    audiod \
+    power.msm8974 \
+    keystore.msm8974 \
+    libshim_camera \
+    libshim_wvm \
+    librmnetctl \
+    sh_vendor \
+    mkshrc_vendor
+	
 # System properties
 -include $(LOCAL_PATH)/system_prop.mk
 
 # Screen density
 PRODUCT_AAPT_CONFIG := normal
 PRODUCT_AAPT_PREF_CONFIG := xxhdpi
+PRODUCT_PROPERTY_OVERRIDES += debug.hwui.use_buffer_age=false
 
 # Boot animation
 TARGET_BOOTANIMATION_HALF_RES := true
@@ -63,6 +106,13 @@ $(call inherit-product, frameworks/native/build/phone-xxhdpi-2048-dalvik-heap.mk
 
 $(call inherit-product, frameworks/native/build/phone-xxhdpi-2048-hwui-memory.mk)
 
+# Live Wallpapers
+PRODUCT_PACKAGES += \
+    LiveWallpapers \
+    LiveWallpapersPicker \
+    VisualizationWallpapers \
+    librs_jni
+	
 # Audio
 PRODUCT_PACKAGES += \
     audio.a2dp.default \

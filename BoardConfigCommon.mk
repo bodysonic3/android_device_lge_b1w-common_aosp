@@ -16,15 +16,22 @@
 
 TARGET_SPECIFIC_HEADER_PATH := device/lge/b1w-common/include
 
-# Architecture
-TARGET_ARCH := arm
-TARGET_ARCH_VARIANT := armv7-a-neon
+TARGET_NO_BOOTLOADER := true
+
+# Platform
 TARGET_BOARD_PLATFORM := msm8974
 TARGET_BOARD_PLATFORM_GPU := qcom-adreno330
+
+#Kernel Toolchain
+TARGET_KERNEL_CROSS_COMPILE_PREFIX := arm-linux-androideabi-
+
+# Architecture
+TARGET_CPU_VARIANT := krait
 TARGET_CPU_ABI := armeabi-v7a
 TARGET_CPU_ABI2 := armeabi
-TARGET_CPU_VARIANT := krait
-TARGET_USE_QCOM_BIONIC_OPTIMIZATION := true
+TARGET_ARCH := arm
+TARGET_ARCH_VARIANT := armv7-a-neon
+TARGET_CPU_SMP := true
 
 # Bootloader
 TARGET_BOOTLOADER_BOARD_NAME := galbi
@@ -35,69 +42,98 @@ TARGET_NO_RADIOIMAGE := true
 BOARD_CUSTOM_BOOTIMG := true
 BOARD_CUSTOM_BOOTIMG_MK := device/lge/b1w-common/releasetools/mkbootimg.mk
 BOARD_KERNEL_BASE := 0x00000000
-BOARD_KERNEL_CMDLINE := console=ttyHSL0,115200,n8 ehci-hcd.park=3 msm_rtb.filter=0x0 androidboot.hardware=b1w
+BOARD_KERNEL_CMDLINE := console=ttyHSL0,115200,n8 androidboot.hardware=b1w androidboot.selinux=permissive user_debug=31  msm_rtb.filter=0x0 ehci-hcd.park=3
 BOARD_KERNEL_PAGESIZE := 2048
 BOARD_KERNEL_SEPARATED_DT := true
 BOARD_MKBOOTIMG_ARGS := --ramdisk_offset 0x02000000 --tags_offset 0x00000100
 TARGET_KERNEL_SOURCE := kernel/lge/msm8974
 
 # Audio
-AUDIO_FEATURE_ENABLED_COMPRESS_VOIP := false
-AUDIO_FEATURE_ENABLED_MULTI_VOICE_SESSIONS := true
+TARGET_QCOM_AUDIO_VARIANT := caf-msm8974
+TARGET_QCOM_MEDIA_VARIANT := caf-msm8974
+BOARD_USES_ALSA_AUDIO:= true
+AUDIO_FEATURE_ENABLED_COMPRESS_VOIP := true
+AUDIO_FEATURE_ENABLED_EXTN_FORMATS := true
+AUDIO_FEATURE_ENABLED_EXTN_POST_PROC := true
+AUDIO_FEATURE_ENABLED_FLUENCE := true
+AUDIO_FEATURE_ENABLED_HFP := true
+AUDIO_FEATURE_ENABLED_PROXY_DEVICE := true
+AUDIO_FEATURE_ENABLED_USBAUDIO := true
+AUDIO_FEATURE_ENABLED_COMPRESS_CAPTURE := true
+AUDIO_FEATURE_ENABLED_INCALL_MUSIC := true
 AUDIO_FEATURE_ENABLED_NEW_SAMPLE_RATE := true
-BOARD_USES_ALSA_AUDIO := true
-USE_CUSTOM_AUDIO_POLICY := 1
+USE_LEGACY_LOCAL_AUDIO_HAL := true
+
+#AUDIO_FEATURE_ENABLED_COMPRESS_VOIP := false
+#AUDIO_FEATURE_ENABLED_MULTI_VOICE_SESSIONS := true
+#AUDIO_FEATURE_ENABLED_NEW_SAMPLE_RATE := true
+#BOARD_USES_ALSA_AUDIO := true
+#USE_CUSTOM_AUDIO_POLICY := 1
 
 # Bluetooth
-BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/lge/b1w-common/bluetooth
-BOARD_CUSTOM_BT_CONFIG := device/lge/b1w-common/bluetooth/vnd_g2.txt
 BOARD_HAVE_BLUETOOTH := true
-BOARD_HAVE_BLUETOOTH_BCM := true
+BOARD_HAVE_BLUETOOTH_QCOM := true
+
+#BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/lge/b1w-common/bluetooth
+#BOARD_CUSTOM_BT_CONFIG := device/lge/b1w-common/bluetooth/vnd_g2.txt
+#BOARD_HAVE_BLUETOOTH := true
+#BOARD_HAVE_BLUETOOTH_BCM := true
 
 # Boot animation
-TARGET_BOOTANIMATION_MULTITHREAD_DECODE := true
+#TARGET_BOOTANIMATION_MULTITHREAD_DECODE := true
 
 # Camera
-BOARD_GLOBAL_CFLAGS += -DCAMERA_VENDOR_L_COMPAT -DMETADATA_CAMERA_SOURCE
-TARGET_NEEDS_PLATFORM_TEXT_RELOCATIONS := true
-USE_DEVICE_SPECIFIC_CAMERA := true
-TARGET_USES_MEDIA_EXTENSIONS := true
-TARGET_HAS_LEGACY_CAMERA_HAL1 := true
+USE_CAMERA_STUB := true
+TARGET_USES_NON_TREBLE_CAMERA := true
+#BOARD_GLOBAL_CFLAGS += -DCAMERA_VENDOR_L_COMPAT -DMETADATA_CAMERA_SOURCE
+#TARGET_NEEDS_PLATFORM_TEXT_RELOCATIONS := true
+#USE_DEVICE_SPECIFIC_CAMERA := true
+#TARGET_USES_MEDIA_EXTENSIONS := true
+#TARGET_HAS_LEGACY_CAMERA_HAL1 := true
+
+# Disable secure discard because it's SLOW
+BOARD_SUPPRESS_SECURE_ERASE := true
 
 # Charger
-BOARD_CHARGING_CMDLINE_NAME := "androidboot.mode"
-BOARD_CHARGING_CMDLINE_VALUE := "chargerlogo"
-BOARD_CHARGER_ENABLE_SUSPEND := true
+#BOARD_CHARGING_CMDLINE_NAME := "androidboot.mode"
+#BOARD_CHARGING_CMDLINE_VALUE := "chargerlogo"
+#BOARD_CHARGER_ENABLE_SUSPEND := true
+
+BOARD_CHARGER_DISABLE_INIT_BLANK := true
+HEALTHD_FORCE_BACKLIGHT_CONTROL := true
+HEALTHD_BACKLIGHT_ON_LEVEL := 125
 
 # CMHW
-BOARD_HARDWARE_CLASS := device/lge/b1w-common/cmhw/
-TARGET_TAP_TO_WAKE_NODE := "/sys/devices/virtual/input/lge_touch/dt2w_enable"
+#BOARD_HARDWARE_CLASS := device/lge/b1w-common/cmhw/
+#TARGET_TAP_TO_WAKE_NODE := "/sys/devices/virtual/input/lge_touch/dt2w_enable"
 
-# Dex-preoptimization to speed up first boot sequence
-ifeq ($(HOST_OS),linux)
-  ifeq ($(TARGET_BUILD_VARIANT),user)
-    ifeq ($(WITH_DEXPREOPT),)
-      WITH_DEXPREOPT := true
-    endif
-  endif
-endif
-DONT_DEXPREOPT_PREBUILTS := true
+# GPS
+USE_DEVICE_SPECIFIC_GPS := true
+
 # Display
+TARGET_QCOM_DISPLAY_VARIANT := caf-msm8974
 HAVE_ADRENO_SOURCE := false
 MAX_EGL_CACHE_KEY_SIZE := 12*1024
 MAX_EGL_CACHE_SIZE := 2048*1024
 NUM_FRAMEBUFFER_SURFACE_BUFFERS := 3
 OVERRIDE_RS_DRIVER := libRSDriver_adreno.so
 TARGET_USES_ION := true
+TARGET_USES_C2D_COMPOSITION := true
 USE_OPENGL_RENDERER := true
 SF_VSYNC_EVENT_PHASE_OFFSET_NS := 5000000
 VSYNC_EVENT_PHASE_OFFSET_NS := 7500000
+
+# netd
+TARGET_KERNEL_NO_FRA_UID_RANGE_SUPPORT := true
 
 # Fonts
 EXTENDED_FONT_FOOTPRINT := true
 
 # Lights
 TARGET_PROVIDES_LIBLIGHT := true
+
+# keymaster
+TARGET_KEYMASTER_WAIT_FOR_QSEE := true
 
 # Offmode Charging
 BOARD_CHARGING_CMDLINE_NAME := "androidboot.mode"
@@ -114,11 +150,14 @@ BOARD_SYSTEMIMAGE_PARTITION_SIZE := 3489660928
 BOARD_USERDATAIMAGE_PARTITION_SIZE := 10760486912
 
 # Power
-TARGET_POWERHAL_VARIANT := qcom
+#TARGET_POWERHAL_VARIANT := qcom
+TARGET_PROVIDES_POWERHAL := true
 
 # Qualcomm support
 BOARD_USES_QCOM_HARDWARE := true
+TARGET_USES_QCOM_BSP := true
 BOARD_USES_QC_TIME_SERVICES := true
+USE_CLANG_PLATFORM_BUILD := true
 
 # Recovery
 BOARD_NO_SECURE_DISCARD := true
@@ -128,6 +167,7 @@ TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
 TARGET_RECOVERY_UPDATER_LIBS := librecovery_updater_g2
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USERIMAGES_USE_F2FS := true
+BOARD_HAS_LARGE_FILESYSTEM := true
 
 # Releasetools
 TARGET_RELEASETOOLS_EXTENSIONS := device/lge/b1w-common/releasetools
@@ -145,15 +185,23 @@ BOARD_SEPOLICY_DIRS += \
     device/lge/b1w-common/sepolicy
 
 # Wi-Fi
+BOARD_HAS_QCOM_WLAN         := true
 BOARD_WPA_SUPPLICANT_DRIVER := NL80211
 WPA_SUPPLICANT_VERSION      := VER_0_8_X
-BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_bcmdhd
+BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_$(BOARD_WLAN_DEVICE)
 BOARD_HOSTAPD_DRIVER        := NL80211
-BOARD_HOSTAPD_PRIVATE_LIB   := lib_driver_cmd_bcmdhd
+BOARD_HOSTAPD_PRIVATE_LIB        := lib_driver_cmd_$(BOARD_WLAN_DEVICE)
 BOARD_WLAN_DEVICE           := bcmdhd
-WIFI_DRIVER_FW_PATH_PARAM   := "/sys/module/bcmdhd/parameters/firmware_path"
-WIFI_DRIVER_FW_PATH_STA     := "/system/etc/firmware/fw_bcmdhd.bin"
-WIFI_DRIVER_FW_PATH_AP      := "/system/etc/firmware/fw_bcmdhd_apsta.bin"
+#WIFI_DRIVER_FW_PATH_PARAM   := "/sys/module/bcmdhd/parameters/firmware_path"
+#WIFI_DRIVER_FW_PATH_STA     := "/system/etc/firmware/fw_bcmdhd.bin"
+#WIFI_DRIVER_FW_PATH_AP      := "/system/etc/firmware/fw_bcmdhd_apsta.bin"
+
+WIFI_DRIVER_FW_PATH_STA          := "sta"
+WIFI_DRIVER_FW_PATH_AP           := "ap"
+TARGET_USES_QCOM_WCNSS_QMI       := true
+TARGET_PROVIDES_WCNSS_QMI        := true
+TARGET_USES_WCNSS_MAC_ADDR_REV   := true
+
 
 # NFC
 BOARD_NFC_CHIPSET := pn547
@@ -161,6 +209,9 @@ BOARD_NFC_DEVICE := "/dev/pn547"
 
 # Enable real time lockscreen charging current values
 BOARD_GLOBAL_CFLAGS += -DBATTERY_REAL_INFO
+
+#manifest
+DEVICE_MANIFEST_FILE := device/lge/b1w-common/manifest.xml
 
 # TWRP Support - Optional
 ifeq ($(WITH_TWRP),true)
